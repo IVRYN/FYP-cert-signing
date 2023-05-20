@@ -1,2 +1,2 @@
 print("Running crypto file")
-"python" "crypto.py"
+python "crypto.py"
