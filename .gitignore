@@ -1,3 +1,8 @@
 data/*
 keys/*
 signature/*
+transcript_verification_system/db.sqlite3
+transcript_verification_system/validate/__pycache__/*
+transcript_verification_system/transcript_verification_system/__pycache__/*
+transcript_verification_system/transcript_verification_system/__pycache__/*
+transcript_verification_system/validate/migrations/__pycache__/*
