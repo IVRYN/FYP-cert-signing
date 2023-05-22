@@ -1,18 +1,27 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 
-from .models import Transcript
+from .models import Transcript, SubjectInTranscript
 from .forms import GetTranscript
 
 # Create your views here.
 
 def get_transcript(request, stud_id):
-    student_transcript  =   Transcript.objects.get(student_id=stud_id)
+    student_transcript  =   Transcript.objects.filter(student_id=stud_id)
 
-    transcript_subjects =   student_transcript.subjectintranscript_set.all()
+    transcript_ids      =   []
+    for x in range(student_transcript.count()):
+        transcript_ids.append(student_transcript[x].id)
 
-    return render(request, "validate/transcript.html", {"student_transcript" : student_transcript,
-                                                        "subjects" : transcript_subjects})
+    transcript_subject  =   []
+    for x in range(student_transcript.count()):
+        transcript_subject.append(SubjectInTranscript.objects.filter(transcript_id=student_transcript[x].id))
+
+    #transcript_subjects =   student_transcript.subjectintranscript_set.all()
+
+    return render(request, "validate/transcript.html", {"student_id" : stud_id,
+                                                        "transcript_id" : transcript_ids,
+                                                        "transcript_subjects" : transcript_subject})
 
 def index(request):
 

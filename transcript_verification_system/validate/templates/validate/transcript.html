@@ -2,11 +2,15 @@
 <html lang="en">
 <head></head>
 <body>
-    <h1>Student ID: {{ student_transcript.student_id }}</h1>
+    <h1>Student ID: {{ student_id }}</h1>
 
     <ol>
-    {% for subject in subjects %}
-    <li>{{ subject.subject.name }} ": " {{ subject.marks }} </li>
+    {% for transcript in transcript_subjects %}
+    <h1>{{ transcript.transcript_id }} </h1>
+        {% for transcript_info in transcript %}
+            <h2>{{ transcript_info.subject_id }}</h2>
+            <li>{{ transcript.subject.name }} ": " {{ subject.marks }} </li>
+        {% endfor %}
     {% endfor %}
     </ol>
 

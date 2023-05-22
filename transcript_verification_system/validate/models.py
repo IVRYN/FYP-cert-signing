@@ -10,7 +10,7 @@ class Subject(models.Model):
 
 class Transcript(models.Model):
     id              =   models.BigAutoField(primary_key=True, editable=False, null=False)
-    student_id      =   models.ForeignKey("Student", on_delete=models.CASCADE)
+    student         =   models.ForeignKey("Student", on_delete=models.CASCADE)
     subjects        =   models.ManyToManyField(Subject, through="SubjectInTranscript")
     signature       =   models.CharField(max_length=512, editable=False)
     date_created    =   models.DateTimeField(auto_now=True)
@@ -33,4 +33,4 @@ class Student(models.Model):
     name            =   models.CharField(max_length=256, editable=True)
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.id} : {self.name}'
