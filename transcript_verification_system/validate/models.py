@@ -10,13 +10,13 @@ class Subject(models.Model):
 
 class Transcript(models.Model):
     id              =   models.BigAutoField(primary_key=True, editable=False, null=False)
-    student_id      =   models.BigIntegerField(null=False, editable=True)
+    student_id      =   models.ForeignKey("Student", on_delete=models.CASCADE)
     subjects        =   models.ManyToManyField(Subject, through="SubjectInTranscript")
     signature       =   models.CharField(max_length=512, editable=False)
     date_created    =   models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return self.id
+    def __str__(self):
+        return f'{self.id}'
 
 class SubjectInTranscript(models.Model):
     id              =   models.BigAutoField(primary_key=True)
@@ -27,3 +27,10 @@ class SubjectInTranscript(models.Model):
 
     def __str__(self):
         return f'{self.subject}'
+
+class Student(models.Model):
+    id              =   models.BigAutoField(primary_key=True)
+    name            =   models.CharField(max_length=256, editable=True)
+
+    def __str__(self):
+        return f'{self.name}'
