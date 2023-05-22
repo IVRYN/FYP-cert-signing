@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head></head>
+<body>
+    <h1>Student ID: {{ student_transcript.student_id }}</h1>
+
+    <ol>
+    {% for subject in subjects %}
+    <li>{{ subject.subject.name }} ": " {{ subject.marks }} </li>
+    {% endfor %}
+    </ol>
+
+</body>
+</html>
+
