@@ -1,4 +1,8 @@
+from django.conf import settings
 from django.contrib import admin
+from django.core.files import File
+from pathlib import Path
+import os
 
 from .models import Transcript, Subject, SubjectInTranscript, Student
 
@@ -14,13 +18,6 @@ class SubjectInTranscriptInline(admin.TabularInline):
 class TranscriptAdmin(admin.ModelAdmin):
     list_display = ['id', 'student_id', 'signature', 'date_created']
     inlines = [SubjectInTranscriptInline]
-
-    def save_model(self, request, obj, form, change):
-        obj.user    =   request.user
-
-        # signature = sign_transcript(obj)
-
-        super().save_model(request, obj, form, change)
 
     def sign_transcript(self, obj):
         # transcript = Transcript.objects.filter(id=obj.id)

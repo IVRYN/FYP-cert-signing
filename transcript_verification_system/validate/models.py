@@ -13,6 +13,7 @@ class Transcript(models.Model):
     student         =   models.ForeignKey("Student", on_delete=models.CASCADE)
     subjects        =   models.ManyToManyField(Subject, through="SubjectInTranscript")
     signature       =   models.CharField(max_length=512, editable=False)
+    storage         =   models.FileField(upload_to="transcripts", editable=False, null=True)
     date_created    =   models.DateTimeField(auto_now=True)
 
     def __str__(self):
