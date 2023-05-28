@@ -8,6 +8,7 @@ from pathlib import Path
 from pyhanko.sign import signers
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
 from fpdf import FPDF
+import hashlib
 import os
 
 class ValidTranscript(FPDF):
@@ -74,19 +75,20 @@ def create_pdf(obj):
                         signer=pdf_signer,
                     ).sign_pdf(sign)
 
+    # Generate SHA256 hash
     with open(temporary_path, 'rb+') as signed:
         signed.write(out.getvalue())
+        signature    =   hashlib.sha256(out.getvalue()).hexdigest()
 
-    # Generate SHA256 hash
 
     # Return the temporary obj
-    return Path(temporary_path)
+    return Path(temporary_path), signature
 
 @receiver(post_save, sender=SubjectInTranscript)
 def create_pdf_after_save(sender, instance, **kwargs):
     transcript  =   Transcript.objects.get(id=instance.transcript_id)
 
-    pdf_location    =   create_pdf(transcript)
+    pdf_location, signature    =   create_pdf(transcript)
 
     file            =   pdf_location.open(mode="rb")
 
@@ -95,5 +97,6 @@ def create_pdf_after_save(sender, instance, **kwargs):
     if old_file.exists():
         os.remove(f'{settings.MEDIA_ROOT}transcripts/{transcript.id}.pdf')
 
+    transcript.signature    =   signature
     transcript.storage  =   File(file, name=f'{transcript.id}.pdf')
     transcript.save()
