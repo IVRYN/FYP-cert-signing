@@ -6,6 +6,7 @@ from .models import Transcript, SubjectInTranscript
 
 from pathlib import Path
 from pyhanko.sign import signers
+from pyhanko.sign.fields import SigFieldSpec, append_signature_field
 from pyhanko.pdf_utils.incremental_writer import IncrementalPdfFileWriter
 from fpdf import FPDF
 import hashlib
@@ -70,6 +71,7 @@ def create_pdf(obj):
 
     with open(temporary_path, 'rb+') as pdf:
         sign    =   IncrementalPdfFileWriter(pdf)
+        append_signature_field(sign, SigFieldSpec(sig_field_name="Signature", box=(10, 15, 20, 25)))
         out     =   signers.PdfSigner(
                         signers.PdfSignatureMetadata(field_name="Signature"),
                         signer=pdf_signer,
@@ -79,7 +81,6 @@ def create_pdf(obj):
     with open(temporary_path, 'rb+') as signed:
         signed.write(out.getvalue())
         signature    =   hashlib.sha256(out.getvalue()).hexdigest()
-
 
     # Return the temporary obj
     return Path(temporary_path), signature

@@ -19,14 +19,6 @@ class TranscriptAdmin(admin.ModelAdmin):
     list_display = ['id', 'student_id', 'signature', 'date_created']
     inlines = [SubjectInTranscriptInline]
 
-    def sign_transcript(self, obj):
-        # transcript = Transcript.objects.filter(id=obj.id)
-        # subjects = Transcript.subjects.through.objects.filter(transcript_id=obj.id)
-
-        # Create PDF
-
-        pass
-
 @admin.register(Subject)
 class Subject(admin.ModelAdmin):
     list_display = ['id', 'name']
