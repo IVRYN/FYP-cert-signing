@@ -2,7 +2,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.core.files import File
-from .models import Transcript, SubjectInTranscript
+from .models import Transcript, SubjectInTranscript, Student
 
 from pathlib import Path
 from pyhanko.sign import signers
@@ -41,10 +41,10 @@ def create_pdf(obj):
 
     pdf.cell(140, 10, ln=1)
     pdf.cell(50, 10, f'Student Name:', 1, 0, 'C')
-    pdf.cell(140, 10, f'Adam Warlock', 1, 1, 'C')
+    pdf.cell(140, 10, f'{obj.student.name}', 1, 1, 'C')
 
     pdf.cell(50, 10, f'Student ID:', 1, 0, 'C')
-    pdf.cell(140, 10, f'1', 1, 1, 'C')
+    pdf.cell(140, 10, f'{obj.student.id}', 1, 1, 'C')
 
     pdf.cell(140, 10, ln=1)
 
