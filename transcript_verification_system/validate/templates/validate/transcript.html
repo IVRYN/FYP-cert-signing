@@ -10,15 +10,34 @@
 <body>
     <h1>Student ID: {{ student_id }}</h1>
 
-    <ol>
-    {% for transcript in transcript_subjects %}
-    <h1>{{ transcript.transcript_id }} </h1>
-        {% for transcript_info in transcript %}
-            <h2>{{ transcript_info.subject_id }}</h2>
-            <li>{{ transcript.subject.name }} ": " {{ subject.marks }} </li>
+    {{ transcripts.values }}
+
+    {% for transcript in transcripts %}
+    <table border="1">
+        <tr>
+            <td style="padding: 10px; border: 1px solid black;"><b>Transcript ID: </b></td>
+            <td style="padding: 10px; border: 1px solid black;">{{ transcript.id }}</td>
+            <td style="padding: 10px; border: 1px solid black;"><b>Student ID:</b></td>
+            <td style="padding: 10px; border: 1px solid black;">{{ transcript.student_id }}</td>
+            <td style="padding: 10px; border: 1px solid black;">Transcript File</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px; border: 1px solid black;"><b>Subject ID</b></td>
+            <td style="padding: 10px; border: 1px solid black;"><b>Subject Name</b></td>
+            <td style="padding: 10px; border: 1px solid black;"><b>Marks</b></td>
+            <td style="padding: 10px; border: 1px solid black;"><b>Grade</b></td>
+            <td style="padding: 10px; border: 1px solid black;"><a href="{% url 'download_transcript' transcript.id %}">Download</a></td>
+        </tr>
+        {% for subject in transcript.subjectintranscript_set.all %}
+        <tr>
+            <td style="padding: 10px; border: 1px solid black;">{{ subject.subject.id }}</td>
+            <td style="padding: 10px; border: 1px solid black;">{{ subject.subject.name }}</td>
+            <td style="padding: 10px; border: 1px solid black;">{{ subject.marks }}</td>
+            <td style="padding: 10px; border: 1px solid black;">{{ subject.grade }}</td>
+        </tr>
         {% endfor %}
     {% endfor %}
-    </ol>
+    </table>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
 </body>
 </html>

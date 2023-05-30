@@ -1,4 +1,4 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.http import HttpResponse
 
 from django.conf import settings
@@ -13,21 +13,16 @@ from .forms import GetTranscript, ValidateTranscript
 # Create your views here.
 
 def get_transcript(request, stud_id):
-    student_transcript  =   Transcript.objects.filter(student_id=stud_id)
-
-    transcript_ids      =   []
-    for x in range(student_transcript.count()):
-        transcript_ids.append(student_transcript[x].id)
-
-    transcript_subject  =   []
-    for x in range(student_transcript.count()):
-        transcript_subject.append(SubjectInTranscript.objects.filter(transcript_id=student_transcript[x].id))
-
-    #transcript_subjects =   student_transcript.subjectintranscript_set.all()
+    transcripts     =   Transcript.objects.filter(student=stud_id)
 
     return render(request, "validate/transcript.html", {"student_id" : stud_id,
-                                                        "transcript_id" : transcript_ids,
-                                                        "transcript_subjects" : transcript_subject})
+                                                        "transcripts" : transcripts})
+
+def download_transcript(request, transcript_id):
+    transcript      =   get_object_or_404(Transcript, pk=transcript_id)
+    response        =   HttpResponse(transcript.storage, content_type='application/pdf')
+    response['Content-Disposition']     =   f'attachment; filename="{transcript.storage.name}"'
+    return response
 
 def index(request):
 
