@@ -71,7 +71,7 @@ def create_pdf(obj):
 
     with open(temporary_path, 'rb+') as pdf:
         sign    =   IncrementalPdfFileWriter(pdf)
-        append_signature_field(sign, SigFieldSpec(sig_field_name="Signature", box=(10, 15, 20, 25)))
+        append_signature_field(sign, SigFieldSpec(sig_field_name="Signature", box=(10, 40, 100, 10)))
         out     =   signers.PdfSigner(
                         signers.PdfSignatureMetadata(field_name="Signature"),
                         signer=pdf_signer,
